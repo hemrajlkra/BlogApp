@@ -1,6 +1,7 @@
 const{Schema, model} = require('mongoose');
 // import the crypto module to hash the password
 const {createHmac,randomBytes} = require('crypto');
+const { CreateToken } = require('../services/authentication');
 
 const userSchema = new Schema(
     {
@@ -48,7 +49,7 @@ userSchema.pre('save', function(next){
 
 // static method to match the password with the hashed password in the database 
 // this is mongoose virtual function that checks when the user signin if the password is correct
-userSchema.static("matchPassword", async function(email, password){
+userSchema.static("matchPasswordAndGenerateToken", async function(email, password){
     const user = await this.findOne({email});
     if(!user) throw new Error("User not found");
     const hashedPassword = user.password;
@@ -61,7 +62,8 @@ userSchema.static("matchPassword", async function(email, password){
     if(userProvidedHash !== hashedPassword)
         throw new Error("Password is incorrect");
 
-    return user;
+    const token  = CreateToken(user);
+    return token;
 })
 
 const User = model('User', userSchema);
