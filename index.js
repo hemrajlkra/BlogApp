@@ -3,6 +3,8 @@ const express = require('express');
 const userRoute = require('./routes/User');
 const app = express();
 const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
+const { checkForAuthenticationCookie } = require('./middleware/authentication');
 
 const port = 8000;
 mongoose.connect('mongodb://localhost:27017/BlogApp')
@@ -12,8 +14,12 @@ app.set('view engine', 'ejs');
 app.set('views',path.resolve("./views"));
 
 app.use(express.urlencoded({extended:true})); // parse the form data
+app.use(cookieParser()); // parse the cookies in the request headers
+app.use(checkForAuthenticationCookie('_uid')); // check for the authentication cookie
 app.get("/", (req,res)=>{
-    res.render('home');
+    res.render('home',{
+        user:req.user
+    });
 });
 
 app.use("/user", userRoute);// Registering the route :use the userRoute for all routes starting with /user
