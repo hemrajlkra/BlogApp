@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/head.ejs') %>
+    <title>Document</title>
+</head>
+<body>
+    <%- include('./partials/navbar.ejs') %>
+    <div class="container mt-3">
+        <form method="post" action="/blog">
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" class="form-control" id="title" name="title" aria-describedby="title">
+            </div>
+            <div class="mb-3">
+                <label for="coverImage" class="form-label">Cover Page</label>
+                <input type="file" class="form-control" id="coverImage" name="coverImage" aria-describedby="coverImage">
+            </div>
+            <div class="mb-3">
+                <label for="floatingTextarea">Body</label>
+                <textarea class="form-control" id="body" name="body" placeholder="Add your content..." ></textarea>
+            </div>
+            <div class="mb-3">
+                <button class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+    
+</body>
+
+<%-include('./partials/script.ejs') %>
+</html>

@@ -1,6 +1,7 @@
 const path = require('path');
 const express = require('express');
 const userRoute = require('./routes/User');
+const blogRoute = require('./routes/blog');
 const app = express();
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
@@ -23,6 +24,7 @@ app.get("/", (req,res)=>{
 });
 
 app.use("/user", userRoute);// Registering the route :use the userRoute for all routes starting with /user
+app.use("/blog", blogRoute);// Register the blog router
 app.listen(port, ()=> console.log(`Server is running on port ${port}`));
 
 //help me resolve this error TypeError: Router.use() requires a middleware function but got a Object
