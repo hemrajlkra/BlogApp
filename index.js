@@ -2,6 +2,7 @@ const path = require('path');
 const express = require('express');
 const userRoute = require('./routes/User');
 const blogRoute = require('./routes/blog');
+const blogModel = require('./models/blog')
 const app = express();
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
@@ -17,9 +18,14 @@ app.set('views',path.resolve("./views"));
 app.use(express.urlencoded({extended:true})); // parse the form data
 app.use(cookieParser()); // parse the cookies in the request headers
 app.use(checkForAuthenticationCookie('_uid')); // check for the authentication cookie
-app.get("/", (req,res)=>{
+app.use(express.static(path.resolve('./public/Images'))); //this section is responsible to display images on home page
+//Getting the user details and the blog details on home page.
+app.get("/", async (req,res)=>{
+    const allBlogs= await blogModel.find({});
+    console.log(allBlogs);
     res.render('home',{
-        user:req.user
+        user:req.user,
+        blogs:allBlogs
     });
 });
 
