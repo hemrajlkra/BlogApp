@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('./partials/head.ejs') %>
+        <title>SignIn Page</title>
+</head>
+
+<body>
+    <%- include('./partials/navbar.ejs') %>
+    <div class="container mt-4">
+        <h1>
+            <%= singleBlog.title %>
+        </h1>
+        <img src="<%= singleBlog.coverImage %>" width="600px"/>
+        <pre class="mt-3">
+            <%= singleBlog.body %>
+        </pre>
+    </div>
+    <div class="mt-4">
+        <img src="/public/Images/default.png" width="50px"/>
+        <%= singleBlog.createdBy.name %>
+    </div>
+    
+</body>
+<%-include('./partials/script.ejs') %>
+
+</html>

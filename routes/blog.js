@@ -1,4 +1,4 @@
-const { Router } = require('express');
+const { Router, response } = require('express');
 const path = require('path');
 const multer = require('multer');
 const blog = require('../models/blog');
@@ -17,6 +17,16 @@ const upload = multer({ storage: storage })
 router.get("/add-new",(req,res)=>{
     return res.render('addBlog',{user:req.user});
 });
+
+// To render the specific blog on readmore we create a get route
+router.get('/:id', async(req,res)=>{
+    const singleBlog = await blog.findById(req.params.id).populate('createdBy');
+    console.log(singleBlog);
+    return res.render('blogPage',{
+      user:req.user,
+      singleBlog
+    });  
+})
 
 router.post("/",upload.single('coverImage'), async (req,res)=>{
     const {title,body} = req.body;

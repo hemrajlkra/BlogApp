@@ -22,7 +22,6 @@ app.use(express.static(path.resolve('./public/Images'))); //this section is resp
 //Getting the user details and the blog details on home page.
 app.get("/", async (req,res)=>{
     const allBlogs= await blogModel.find({});
-    console.log(allBlogs);
     res.render('home',{
         user:req.user,
         blogs:allBlogs
