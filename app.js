@@ -1,3 +1,4 @@
+require('dotenv').config();
 const path = require('path');
 const express = require('express');
 const userRoute = require('./routes/User');
@@ -8,8 +9,8 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const { checkForAuthenticationCookie } = require('./middleware/authentication');
 
-const port = 8000;
-mongoose.connect('mongodb://localhost:27017/BlogApp')
+const port = process.env.PORT ||8000;
+mongoose.connect(process.env.MONGO_URL)
     .then(()=>console.log("Connected to the database"))
     .catch((err)=>console.log(err));
 app.set('view engine', 'ejs');
