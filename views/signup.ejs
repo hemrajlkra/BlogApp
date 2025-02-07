@@ -3,30 +3,168 @@
 
 <head>
     <%- include('./partials/head.ejs') %>
-        <title>SignUP Page</title>
+    <title>Sign Up | Your Blog</title>
+    <style>
+        .auth-container {
+            max-width: 500px;
+            margin: 2rem auto;
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            background: #ffffff;
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .auth-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control {
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .password-container {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #6b7280;
+        }
+
+        .auth-actions {
+            margin-top: 1.5rem;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            border: none;
+            font-weight: 500;
+            transition: transform 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #6b7280;
+        }
+
+        .auth-footer a {
+            color: #6366f1;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .terms-text {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-top: 1rem;
+            text-align: center;
+        }
+    </style>
 </head>
 
-<body>
+<body class="bg-gray-50">
     <%- include('./partials/navbar.ejs') %>
-        <div class="container mt-4">
-            <form action="/user/signup" method="post">
-                <div class="mb-3">
-                    <label for="exampleInputName1" id="name" class="form-label">Full Name</label>
-                    <input type="text" required class="form-control" name="name" id="name" aria-describedby="emailHelp">
-                </div>
-                <div class="mb-3">
-                    <label for="exampleInputEmail1" id="email" class="form-label">Email address</label>
-                    <input type="email" required class="form-control" name="email" id="email" aria-describedby="emailHelp">
-                    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-                </div>
-                <div class="mb-3">
-                    <label for="exampleInputPassword1"  id="password" class="form-label">Password</label>
-                    <input type="password" required class="form-control" name="password" id="password">
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
+    
+    <div class="auth-container">
+        <div class="auth-header">
+            <h1 class="auth-title">Create Account</h1>
+            <p class="text-muted">Join our community of writers and readers</p>
         </div>
+
+        <form action="/user/signup" method="post">
+            <div class="mb-4">
+                <label for="name" class="form-label">Full Name</label>
+                <input type="text" required class="form-control" name="name" id="name" 
+                       placeholder="Enter your full name">
+            </div>
+
+            <div class="mb-4">
+                <label for="email" class="form-label">Email Address</label>
+                <input type="email" required class="form-control" name="email" id="email" 
+                       placeholder="Enter your email">
+                <small class="form-text text-muted">We'll never share your email with anyone else.</small>
+            </div>
+
+            <div class="mb-4 password-container">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" required class="form-control" name="password" id="password" 
+                       placeholder="Create a password">
+                <i class="bi bi-eye-slash password-toggle" onclick="togglePassword('password')"></i>
+            </div>
+
+            <div class="mb-4 password-container">
+                <label for="confirmPassword" class="form-label">Confirm Password</label>
+                <input type="password" required class="form-control" name="confirmPassword" id="confirmPassword" 
+                       placeholder="Confirm your password">
+                <i class="bi bi-eye-slash password-toggle" onclick="togglePassword('confirmPassword')"></i>
+            </div>
+
+            <div class="terms-text">
+                By creating an account, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+            </div>
+
+            <div class="auth-actions">
+                <button type="submit" class="btn btn-primary">Create Account</button>
+            </div>
+        </form>
+
+        <div class="auth-footer">
+            Already have an account? <a href="/user/signin">Sign in</a>
+        </div>
+    </div>
+
+    <script>
+        function togglePassword(fieldId) {
+            const passwordField = document.getElementById(fieldId);
+            const toggleIcon = passwordField.nextElementSibling;
+            
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                toggleIcon.classList.replace('bi-eye-slash', 'bi-eye');
+            } else {
+                passwordField.type = 'password';
+                toggleIcon.classList.replace('bi-eye', 'bi-eye-slash');
+            }
+        }
+    </script>
+
+    <%-include('./partials/script.ejs') %>
 </body>
-<%-include('./partials/script.ejs') %>
 
 </html>

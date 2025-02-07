@@ -3,25 +3,141 @@
 
 <head>
     <%- include('./partials/head.ejs') %>
-        <title>SignIn Page</title>
+    <title>Sign In | Your Blog</title>
+    <style>
+        .auth-container {
+            max-width: 500px;
+            margin: 2rem auto;
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            background: #ffffff;
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .auth-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control {
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .auth-actions {
+            margin-top: 1.5rem;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            border: none;
+            font-weight: 500;
+            transition: transform 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #6b7280;
+        }
+
+        .auth-footer a {
+            color: #6366f1;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .social-login {
+            margin-top: 2rem;
+            border-top: 1px solid #e5e7eb;
+            padding-top: 1.5rem;
+        }
+
+        .social-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .social-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .social-btn:hover {
+            background: #f8f9fa;
+            transform: translateY(-1px);
+        }
+    </style>
 </head>
 
-<body>
+<body class="bg-gray-50">
     <%- include('./partials/navbar.ejs') %>
-        <div class="container mt-4">
-            <form action="/user/signin" method="post">
-                <div class="mb-3">
-                    <label for="exampleInputEmail1" id="email" class="form-label">Email address</label>
-                    <input type="email" required class="form-control" name="email" id="email" aria-describedby="emailHelp">
-                </div>
-                <div class="mb-3">
-                    <label for="exampleInputPassword1"  id="password" class="form-label">Password</label>
-                    <input type="password" required class="form-control" name="password" id="password">
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
+    
+    <div class="auth-container">
+        <div class="auth-header">
+            <h1 class="auth-title">Welcome Back</h1>
+            <p class="text-muted">Sign in to continue to your account</p>
         </div>
+
+        <form action="/user/signin" method="post">
+            <div class="mb-4">
+                <label for="email" class="form-label">Email Address</label>
+                <input type="email" required class="form-control" name="email" id="email" 
+                       placeholder="Enter your email">
+            </div>
+
+            <div class="mb-4">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" required class="form-control" name="password" id="password" 
+                       placeholder="Enter your password">
+            </div>
+
+            <div class="auth-actions">
+                <button type="submit" class="btn btn-primary">Sign In</button>
+            </div>
+        </form>
+        <div class="auth-footer">
+            Don't have an account? <a href="/user/signup">Create account</a>
+        </div>
+    </div>
+
+    <%-include('./partials/script.ejs') %>
 </body>
-<%-include('./partials/script.ejs') %>
 
 </html>

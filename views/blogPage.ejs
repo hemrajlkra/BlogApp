@@ -3,26 +3,197 @@
 
 <head>
     <%- include('./partials/head.ejs') %>
-        <title>SignIn Page</title>
+    <title>
+        <%= singleBlog.title %>
+    </title>
+    <style>
+        :root {
+            --primary-color: #2d3436;
+            --secondary-color: #0984e3;
+        }
+
+        .blog-header {
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 1.5rem;
+        }
+
+        .blog-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .blog-image {
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    margin: 2rem auto;
+    max-width: 80%;
+    height: auto;
+    max-height: 60vh; /* Limits height to 60% of viewport height */
+    object-fit: cover;
+    display: block;
+}
+
+.blog-content pre {
+        white-space: pre-wrap; /* Wrap text instead of horizontal scroll */
+        word-wrap: break-word; /* Break long words */
+        overflow-x: auto; /* Only show scrollbar when needed */
+        padding: 1.5rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+        font-family: 'Courier New', Courier, monospace;
+        line-height: 1.6;
+        max-width: 80%;
+        margin: 1rem 10rem;
+        border: 1px solid #eee;
+        tab-size: 4; /* Adjust tab spacing if needed */
+    }
+
+        .author-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 12px;
+            margin: 2rem 0;
+        }
+
+        .author-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .comments-section {
+            margin-top: 3rem;
+            padding: 2rem;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .comment-card {
+            padding: 1.5rem;
+            margin: 1rem 0;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        .comment-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .comment-content {
+            font-size: 1rem;
+            color: #666;
+            margin-left: 2.8rem;
+            white-space: pre-wrap;
+            line-height: 1.6;
+        }
+
+        .comment-form {
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        .comment-form input {
+            padding: 1rem;
+            border-radius: 25px;
+            border: 2px solid #eee;
+            transition: all 0.3s ease;
+        }
+
+        .comment-form input:focus {
+            border-color: var(--secondary-color);
+            box-shadow: none;
+        }
+        @media (max-width: 768px) {
+    .blog-image {
+        max-width: 100%;
+        max-height: 50vh;
+    }
+    @media (max-width: 768px) {
+        .blog-content pre {
+            font-size: 14px;
+            padding: 1rem;
+        }
+    }
+}
+    </style>
 </head>
 
-<body>
+<body class="bg-light">
     <%- include('./partials/navbar.ejs') %>
-    <div class="container mt-4">
-        <h1>
-            <%= singleBlog.title %>
-        </h1>
-        <img src="<%= singleBlog.coverImage %>" width="600px"/>
-        <pre class="mt-3">
-            <%= singleBlog.body %>
-        </pre>
-    </div>
-    <div class="mt-4">
-        <img src="/public/Images/default.png" width="50px"/>
-        <%= singleBlog.createdBy.name %>
-    </div>
     
+    <main class="container mt-5">
+        <article class="blog-article">
+            <header class="blog-header text-center">
+                <h1 class="blog-title">
+                    <%= singleBlog.title %>
+                </h1>
+                <div class="meta text-muted">
+                    <span><%= new Date(singleBlog.createdAt).toLocaleDateString() %></span>
+                </div>
+            </header>
+
+            <img src="<%= singleBlog.coverImage %>" class="blog-image d-block mx-auto" alt="Blog cover image">
+
+            <div class="blog-content">
+                <pre><%- singleBlog.body %></pre>
+            </div>
+
+            <div class="author-section">
+                <img src="<%= user.profilePic %>" class="author-img" alt="Author profile picture">
+                <div>
+                    <h6 class="mb-1">Written by</h6>
+                    <p class="mb-0 h5"><%= singleBlog.createdBy.name %></p>
+                </div>
+            </div>
+        </article>
+
+        <section class="comments-section">
+            <h3 class="mb-4"><i class="fas fa-comments me-2"></i>Comments (<%= coments.length %>)</h3>
+            
+            <% if(locals.user){ %>
+            <form class="comment-form" action="/blog/comment/<%= singleBlog._id %>" method="post">
+                <div class="input-group">
+                    <input type="text" required class="form-control" name="content" id="content"
+                        placeholder="Join the discussion...">
+                    <button type="submit" class="btn btn-primary px-4">Post</button>
+                </div>
+            </form>
+            <% } %>
+
+            <div class="comments-list">
+                <% coments.forEach(coment=>{ %>
+                <div class="comment-card">
+                    <div class="comment-author">
+                        <img src="/public/<%= coment.createdBy.profilePic %>" class="author-img" alt="Comment author image">
+                        <div>
+                            <h6 class="mb-0"><%= coment.createdBy.name %></h6>
+                            <small class="text-muted"><%= new Date(coment.createdAt).toLocaleDateString() %></small>
+                        </div>
+                    </div>
+                    <p class="comment-content mb-0"><%= coment.content %></p>
+                </div>
+                <% }) %>
+            </div>
+        </section>
+    </main>
+
+    <%-include('./partials/script.ejs') %>
 </body>
-<%-include('./partials/script.ejs') %>
 
 </html>
